@@ -10,6 +10,8 @@ a human before anything costly. Everything is evaluated, traced and shown in a d
 
 **Live demo:** _add your Streamlit Cloud link_ · **Demo video:** _add link_
 
+📖 **Documentation & Interview Guide:** [Complete Architecture & Interview Masterclass PDF](RTO_Guard_Complete_Guide_and_Interview_Prep.pdf) | [HTML Version](rto_guard_guide.html)
+
 ### Highlights
 - **~9x more savings than the naive rule** "verify every COD order" on a time-based test set (₹48k vs ₹5k per 20k orders)
 - **LLM proposes, rules enforce:** offer caps, repeat-RTO rules and cancellations can never be violated, and evals measure how often the LLM needed correcting
