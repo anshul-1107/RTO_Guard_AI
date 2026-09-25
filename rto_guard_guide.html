@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RTO Guard - Complete Architectural Guide & Interview Masterclass</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 14mm 14mm 16mm 14mm;
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      color: #718096;
+    }
+    @bottom-left {
+      content: "RTO Guard 🛡️ | Architectural & Interview Masterclass";
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      color: #718096;
+    }
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1a202c;
+    line-height: 1.5;
+    font-size: 9.2pt;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Cover / Header */
+  .header-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
+    color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-size: 22pt;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .header-subtitle {
+    font-size: 10.5pt;
+    color: #cbd5e1;
+    margin: 0 0 14px 0;
+    font-weight: 400;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .meta-item {
+    font-size: 7.5pt;
+  }
+  .meta-label {
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 6.5pt;
+    margin-bottom: 2px;
+  }
+  .meta-value {
+    color: #f8fafc;
+    font-weight: 600;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 15pt;
+    font-weight: 800;
+    color: #0f172a;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 5px;
+    margin-top: 18px;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+  h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #334155;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 7px;
+    color: #334155;
+  }
+
+  /* Highlight stats cards */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 14pt;
+    font-weight: 800;
+    color: #0284c7;
+    margin-bottom: 2px;
+  }
+  .stat-desc {
+    font-size: 7.5pt;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 12px 0;
+    font-size: 8pt;
+  }
+  th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+    text-align: left;
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+  }
+  td {
+    padding: 5px 8px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  /* Boxes & Callouts */
+  .box {
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 8.5pt;
+  }
+  .box-blue {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    color: #1e3a8a;
+  }
+  .box-green {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    color: #14532d;
+  }
+  .box-amber {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    color: #78350f;
+  }
+
+  /* Code block */
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.2pt;
+    line-height: 1.35;
+    overflow-x: auto;
+    margin: 6px 0 10px 0;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.8pt;
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Flow Diagram */
+  .flow-diagram {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.2pt;
+    line-height: 1.35;
+    white-space: pre;
+    margin-bottom: 10px;
+  }
+
+  /* Interview Q&A Section */
+  .qa-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .qa-q {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .qa-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 6.8pt;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .qa-ans {
+    font-size: 8.2pt;
+    color: #334155;
+    line-height: 1.45;
+  }
+
+  ul, ol {
+    margin-top: 3px;
+    margin-bottom: 6px;
+    padding-left: 16px;
+    color: #334155;
+    font-size: 8.2pt;
+  }
+  li {
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER / HEADER -->
+<div class="header-card">
+  <div class="header-badge">Architecture Blueprint & Technical Interview Masterclass</div>
+  <div class="header-title">RTO Guard 🛡️</div>
+  <div class="header-subtitle">Autonomous AI Agent System for Cash-on-Delivery (COD) Return-to-Origin Reduction in Indian D2C Brands</div>
+  <div class="meta-grid">
+    <div class="meta-item">
+      <div class="meta-label">Author / Candidate</div>
+      <div class="meta-value">Anshul Mathur</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Core Tech Stack</div>
+      <div class="meta-value">LightGBM · LangGraph · pgvector · Gemini</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">GitHub Repository</div>
+      <div class="meta-value">anshul-1107/RTO_Guard_AI</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Net Savings Impact</div>
+      <div class="meta-value">₹48,000 / 20k orders (~9x Naive Baseline)</div>
+    </div>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-num">9x</div>
+    <div class="stat-desc">More net savings than naive "verify all COD" rules</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">0%</div>
+    <div class="stat-desc">PII leakage to LLM (Automated SHA tokenization)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">100%</div>
+    <div class="stat-desc">Guaranteed rule enforcement (LLM cannot violate caps)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">43 / 43</div>
+    <div class="stat-desc">Automated test cases passing in CI pipeline</div>
+  </div>
+</div>
+
+<!-- SECTION 1: EXECUTIVE OVERVIEW -->
+<h1>1. Executive Summary & Problem Space</h1>
+<p>
+In Indian e-commerce and direct-to-consumer (D2C) brands, <strong>Cash on Delivery (COD) represents 60%–70% of total order volume</strong>. However, COD suffers from an alarming return-to-origin (RTO) rate of <strong>25% to 35%</strong>, compared to just <strong>~5% for prepaid orders</strong>.
+</p>
+
+<h3>The Real Unit Economics of an RTO:</h3>
+<p>When an order is returned to origin, the brand incurs direct deadweight financial loss across multiple cost buckets:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Cost Component</th>
+      <th>Average INR Loss</th>
+      <th>Operational Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Forward Logistics</strong></td>
+      <td>₹60 - ₹80</td>
+      <td>Courier charges to dispatch parcel from central warehouse to customer hub.</td>
+    </tr>
+    <tr>
+      <td><strong>Reverse Logistics</strong></td>
+      <td>₹60 - ₹90</td>
+      <td>Return courier charges when parcel is rejected, unreachable, or cancelled at doorstep.</td>
+    </tr>
+    <tr>
+      <td><strong>Packaging & Damage</strong></td>
+      <td>₹30 - ₹50</td>
+      <td>Torn packaging, lost polybags, and products returned in unsellable condition.</td>
+    </tr>
+    <tr>
+      <td><strong>Inventory Blockage</strong></td>
+      <td>₹30 - ₹60</td>
+      <td>Stock is locked in transit for 7–14 days, resulting in stockouts for paying customers.</td>
+    </tr>
+    <tr>
+      <td><strong>Total Loss per RTO</strong></td>
+      <td><strong>₹180 - ₹280</strong></td>
+      <td>Direct EBITDA reduction for every single failed delivery!</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box box-amber">
+  <strong>Why Naive Industry Approaches Fail:</strong>
+  <ul>
+    <li><strong>Naive Rule 1 ("Call every COD customer"):</strong> Verification calls cost ₹8–₹12 per call. Calling 100% of COD orders generates massive operational friction, annoys genuine customers, and yields only ₹5,000 net savings per 20,000 orders.</li>
+    <li><strong>Naive Rule 2 ("Disable COD completely"):</strong> Causes 40%–60% of genuine buyers to abandon checkout and purchase from competitors, crippling top-line revenue.</li>
+    <li><strong>RTO Guard Solution:</strong> A dual-layer system combining <strong>Calibrated Machine Learning (LightGBM)</strong> for economic risk thresholding with an <strong>Autonomous LLM Agent (LangGraph + RAG + Guardrails)</strong> to orchestrate polite, context-aware customer interventions.</li>
+  </ul>
+</div>
+
+<!-- SECTION 2: SYSTEM ARCHITECTURE -->
+<div class="page-break"></div>
+<h1>2. End-to-End System Architecture</h1>
+
+<div class="flow-diagram">
+[Shopify/WooCommerce Order Ingestion Webhook]
+                     │
+                     ▼
+           ┌──────────────────┐
+           │   agent/pii.py   │ ───► Strips Customer Name, Phone, Full Address
+           │ (Zero PII Layer) │      Leaves structural metadata (length, landmark, house #)
+           └─────────┬────────┘
+                     │
+                     ▼
+           ┌──────────────────┐
+           │   ml/predict.py  │ ───► LightGBM Model (18 leak-free features)
+           │ (Risk Scorer)    │      TreeSHAP explainability: top 3 risk drivers
+           └─────────┬────────┘
+                     │
+            [Risk Band Check]
+            ├── LOW Risk / Prepaid ────────► [auto_ship] ──────────► (Warehouse Dispatch)
+            │
+            └── MEDIUM / HIGH Risk
+                     │
+                     ▼
+           ┌──────────────────┐
+           │ agent/policy.py  │ ───► Hard Facts: repeat RTOs, order value, festive mode
+           │ (Deterministic)  │
+           └─────────┬────────┘
+                     │
+                     ▼
+           ┌──────────────────┐
+           │ rag/retriever.py │ ───► Hybrid RAG: pgvector cosine similarity + BM25
+           │ (Brand SOP RAG)  │      Retrieves brand policies (discount limits, token advance)
+           └─────────┬────────┘
+                     │
+                     ▼
+           ┌──────────────────┐
+           │  agent/graph.py  │ ───► Gemini 2.5 Flash decides intervention:
+           │  (LangGraph LLM) │      • PREPAID_OFFER (5% discount up to ₹150)
+           └─────────┬────────┘      • PARTIAL_COD (₹99 token advance)
+                     │               • ADDRESS_CONFIRMATION / OPS_HOLD
+                     ▼
+           ┌──────────────────┐
+           │ agent/policy.py  │ ───► Deterministic Guardrails: "LLM proposes, rules enforce"
+           │ (Enforce Node)   │      Checks discount caps, repeat-RTO rules, safety policies
+           └─────────┬────────┘
+                     │
+            [Approval Required?]
+            ├── High Cost / Cancel / Hold ──► [human_approval] ───► (Streamlit Ops Dashboard)
+            │                                 (LangGraph interrupt)   (Resumes via Postgres)
+            └── Auto-Approved Action
+                     │
+                     ▼
+           ┌──────────────────┐
+           │ draft_message &  │ ───► Generates WhatsApp/SMS in regional language (Hinglish/Eng)
+           │ WhatsApp Outbox  │      Filters prohibited words ("fraud", "risk", "blacklist")
+           └──────────────────┘      Observes TRAI quiet hours (09:00 - 21:00 IST)
+</div>
+
+<h3>Core Components & Directory Breakdown:</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Module / Directory</th>
+      <th>Key Responsibility</th>
+      <th>Tech Stack & Key Files</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>agent/</code></td>
+      <td>State graph, decision logic, prompt templates, and PII anonymization.</td>
+      <td>LangGraph, Pydantic, <code>graph.py</code>, <code>policy.py</code>, <code>pii.py</code></td>
+    </tr>
+    <tr>
+      <td><code>ml/</code></td>
+      <td>Feature engineering, model training, calibrated inference, and SHAP explainability.</td>
+      <td>LightGBM, Scikit-learn, <code>train.py</code>, <code>predict.py</code>, <code>economics.py</code></td>
+    </tr>
+    <tr>
+      <td><code>rag/</code></td>
+      <td>Chunking, embedding, vector store upsert, and hybrid keyword/vector search.</td>
+      <td>PostgreSQL + pgvector, Gemini Embeddings / FakeEmbedder, <code>retriever.py</code></td>
+    </tr>
+    <tr>
+      <td><code>dashboard/</code></td>
+      <td>Interactive operational console for warehouse teams, ops approval, and evals.</td>
+      <td>Streamlit, Altair, <code>app.py</code>, <code>data.py</code></td>
+    </tr>
+    <tr>
+      <td><code>evals/</code></td>
+      <td>Continuous quality gates: retrieval MRR, LLM-as-a-judge, and agent policy adherence.</td>
+      <td>Pytest, Golden Datasets, <code>eval_agent.py</code>, <code>eval_retrieval.py</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 3: KEY TECHNICAL INNOVATIONS -->
+<div class="page-break"></div>
+<h1>3. Deep-Dive: Key Technical Innovations</h1>
+
+<h2>A. Economic Thresholding vs. Generic Accuracy</h2>
+<p>
+Standard ML pipelines optimize for accuracy, F1-score, or ROC-AUC. In production RTO reduction, <strong>maximizing net financial savings</strong> is the only objective that matters. We define an economics matrix in <code>ml/economics.py</code>:
+</p>
+<pre><code>Net Value = Flagged * [ (is_rto * P_success * RTO_Cost) - ((1 - is_rto) * P_friction * Order_Margin) - Intervention_Cost ]
+Where:
+- RTO_Cost = ₹180 (forward + reverse logistics + packaging)
+- Intervention_Cost = ₹10 (WhatsApp API + agent verification call)
+- P_success = 0.40 (40% of flagged risky orders are saved)
+- P_friction = 0.05 (5% of genuine customers cancel due to nuisance)
+- Order_Margin = ₹200 (profit lost if genuine customer cancels)</code></pre>
+<p>
+The LightGBM threshold is chosen on the validation set to maximize this exact function, resulting in an optimal threshold of <strong>0.22</strong> instead of the arbitrary 0.50. This captures 64% of all RTOs while flagging only 33% of orders.
+</p>
+
+<h2>B. Zero PII Guardrail (DPDP Act & GDPR Compliance)</h2>
+<p>
+External LLM APIs (OpenAI, Gemini, Anthropic) should never receive sensitive customer PII. In <code>agent/pii.py</code>:
+</p>
+<ul>
+  <li><strong>Phone numbers:</strong> Masked to <code>98XXXXXX12</code>.</li>
+  <li><strong>Customer Names:</strong> Replaced with template variable <code>{first_name}</code>; the real name is injected locally in memory right before WhatsApp dispatch.</li>
+  <li><strong>Full Addresses:</strong> Never sent to the LLM. Replaced by structural feature flags: <code>has_house_no: bool</code>, <code>has_landmark: bool</code>, <code>address_len: int</code>.</li>
+</ul>
+
+<h2>C. "LLM Proposes, Rules Enforce" Architecture</h2>
+<p>
+LLMs are probabilistic and prone to hallucinations or adversarial prompting. RTO Guard implements a deterministic enforcement boundary in <code>agent/policy.py</code>:
+</p>
+<div class="box box-green">
+  <strong>Guaranteed Invariants Enforced by Code:</strong>
+  <ul>
+    <li>Prepaid discount can <strong>never exceed 10% or ₹150</strong> (enhanced cap ₹250 requires human approval).</li>
+    <li>Total discount on an item cannot exceed <strong>50%</strong>.</li>
+    <li>Customers with <strong>≥ 2 prior RTOs</strong> can never be auto-shipped on COD without a ₹99 token advance.</li>
+    <li>Orders with <code>ACTION_CANCEL</code> or <code>OPS_HOLD</code> <strong>must pause for human approval</strong>.</li>
+    <li>Customer-facing messages are regex-filtered against banned internal terms: <code>["fraud", "suspicious", "risk", "blacklist", "rto", "score"]</code>.</li>
+  </ul>
+</div>
+
+<h2>D. Durable Human-in-the-Loop with LangGraph Interrupts</h2>
+<p>
+When an order requires ops approval (e.g., high-value COD order or order hold), LangGraph executes <code>interrupt()</code>. The state is serialized and persisted into PostgreSQL via <code>PostgresSaver</code>. If the application restarts, crashes, or is redeployed, the workflow does not restart:
+</p>
+<pre><code># Inside agent/graph.py
+if decision.requires_approval and not state.get("approved"):
+    user_decision = interrupt({
+        "order_id": order["order_id"],
+        "proposed_action": decision.action,
+        "reasons": decision.reasons
+    })
+    # Execution pauses here until Ops approves on Streamlit Dashboard!</code></pre>
+
+<!-- SECTION 4: PRODUCTION DEPLOYMENT -->
+<div class="page-break"></div>
+<h1>4. Production Engineering & Deployment Blueprint</h1>
+
+<h2>High-Throughput Microservice Architecture</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Production Implementation</th>
+      <th>Scale & SLA Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Ingestion</strong></td>
+      <td>Shopify / Magento Webhook -&gt; AWS API Gateway -&gt; AWS SQS / Kafka queue</td>
+      <td>Handles 1,000+ orders/sec spike during flash sales</td>
+    </tr>
+    <tr>
+      <td><strong>ML Inference</strong></td>
+      <td>LightGBM exported to ONNX / C++ runtime served on AWS ECS Fargate</td>
+      <td>p99 Latency &lt; 15ms per order</td>
+    </tr>
+    <tr>
+      <td><strong>Stateful Agent</strong></td>
+      <td>LangGraph Workers running on Kubernetes (EKS) with horizontal pod autoscaler</td>
+      <td>Processes decision in &lt; 800ms; durable checkpointer in Supabase / RDS</td>
+    </tr>
+    <tr>
+      <td><strong>Vector DB</strong></td>
+      <td>Managed AWS RDS PostgreSQL 16 with <code>pgvector</code> &amp; HNSW indexing</td>
+      <td>Retrieval latency &lt; 30ms for top-5 chunks</td>
+    </tr>
+    <tr>
+      <td><strong>Communication</strong></td>
+      <td>WhatsApp Business API (Gupshup / Karix / Meta Cloud API) + Interactive CTA buttons</td>
+      <td>Asynchronous delivery; webhook callbacks for button clicks</td>
+    </tr>
+    <tr>
+      <td><strong>Observability</strong></td>
+      <td>Langfuse (Token cost, latency, LLM traces) + Prometheus &amp; Grafana (System metrics)</td>
+      <td>Real-time tracking of cost-per-order and LLM violation rate</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 5: INTERVIEW MASTERCLASS -->
+<h1>5. The Ultimate Interview Masterclass (Q&A)</h1>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">Pitch</span>
+    Q1: Can you give a 60-second elevator pitch of RTO Guard?
+  </div>
+  <div class="qa-ans">
+    "RTO Guard is an AI agent system designed for Indian D2C brands to tackle the 30% Return-to-Origin rate on Cash-on-Delivery orders, which burns ₹180 to ₹250 per returned parcel. Instead of blunt rules like 'call everyone' or 'cancel COD', RTO Guard combines a LightGBM ML model calibrated for net rupee savings with a LangGraph LLM agent. The ML model predicts risk and explains drivers with TreeSHAP. The agent retrieves brand policies via hybrid pgvector RAG, decides a targeted intervention (like a ₹99 token advance or 5% prepaid discount), enforces deterministic guardrails, and drafts personalized WhatsApp messages, keeping human-in-the-loop for costly decisions. It achieves ~9x higher net savings than baseline rules while ensuring zero PII reaches the LLM."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">Design</span>
+    Q2: Why combine traditional ML (LightGBM) with an LLM Agent (LangGraph)? Why not use just one?
+  </div>
+  <div class="qa-ans">
+    "Each technology solves what the other is bad at:
+    <ul>
+      <li><strong>Why not LLM only?</strong> LLMs cannot perform statistical tabular probability calibration across 100,000 historical records. They are slow (500ms–2s), expensive (~$0.01 per order), and prone to numeric hallucinations.</li>
+      <li><strong>Why not ML only?</strong> ML outputs a cold scalar probability (e.g. 0.42). It cannot interpret nuanced brand SOPs, understand unstructured address issues, draft persuasive customer messages in regional Hinglish, or navigate complex stateful negotiation flows.</li>
+      <li><strong>The Synergy:</strong> LightGBM does the fast, cheap (0.5ms) math and provides TreeSHAP explanations. LangGraph uses those explanations as structured context to consult policy SOPs and communicate with the customer."</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">ML Economics</span>
+    Q3: Why did you not use scale_pos_weight or optimize for standard ROC-AUC / F1-score?
+  </div>
+  <div class="qa-ans">
+    "In financial decision systems, probability calibration is critical. Techniques like <code>scale_pos_weight</code> distort the output probabilities away from true posterior likelihoods. Because our agent calculates real INR trade-offs (savings from prevented RTOs vs. cost of interventions and friction loss from genuine customer churn), we kept raw probabilities calibrated. We then used grid search on the validation set against our business utility function (<code>ml/economics.py</code>) to find the threshold that delivers maximum INR savings. An optimal threshold of 0.22 yielded ₹48,000 savings per 20,000 orders."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">RAG</span>
+    Q4: Why was Hybrid Search (pgvector + BM25) chosen over pure semantic vector search?
+  </div>
+  <div class="qa-ans">
+    "Pure vector search frequently struggles with exact domain tokens, policy acronyms, and numeric thresholds (e.g., '₹99 advance', 'Tier-3', 'NDR', '5% cap', 'Bluedart SLA'). BM25 provides exact keyword and token matching, while pgvector provides semantic conceptual matching (e.g., 'customer refused delivery multiple times' matches 'Repeat RTO Policy'). We combined both using Reciprocal Rank Fusion (RRF), ensuring top chunks always contain both exact rule numbers and conceptual relevance."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">Safety</span>
+    Q5: How do you guarantee the LLM doesn't offer a 50% discount or hallucinate policies?
+  </div>
+  <div class="qa-ans">
+    "We follow the 'LLM Proposes, Code Enforces' design pattern. The LLM generates a structured JSON output constrained by Pydantic schemas. That output immediately passes into <code>agent/policy.py</code>, a pure Python deterministic validation layer. If the LLM proposes an 8% discount on a product where brand policy allows at most 5%, the code clamps the value to 5% and records a policy violation metric. The LLM is never given direct write access to customer accounts or discount generation APIs."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">HITL</span>
+    Q6: How does Human-in-the-Loop work across server restarts and distributed workers?
+  </div>
+  <div class="qa-ans">
+    "We leveraged LangGraph's native <code>interrupt()</code> pattern backed by <code>PostgresSaver</code> checkpointer. When a high-risk order requires ops approval, the graph pauses and persists the entire execution state (thread ID, order facts, LLM proposal) into PostgreSQL. The workflow thread becomes dormant. When an operations executive reviews and clicks 'Approve' or 'Reject' on the Streamlit dashboard hours later, the dashboard issues <code>agent.invoke(Command(resume=decision), config)</code>. The worker rehydrates the state from PostgreSQL and continues execution right from the next node."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">Scale</span>
+    Q7: If order volume spikes from 100k to 10M orders/month, what would you re-architect?
+  </div>
+  <div class="qa-ans">
+    "1) <strong>Decouple scoring from agent execution:</strong> LightGBM runs synchronously at checkout/order-create via an in-memory C++ / ONNX service in &lt;10ms. Low-risk orders (67%) auto-ship immediately without touching queues or LLMs.<br>
+    2) <strong>Asynchronous SQS/Kafka Queue for Agent:</strong> Risky orders (33%) push to a partitioned Kafka topic to level-load agent invocations.<br>
+    3) <strong>Embedding &amp; LLM Caching:</strong> Cache frequent policy retrieval vectors in Redis. Cache deterministic message templates for common reason-triplets so the LLM is only invoked for edge-case reasoning.<br>
+    4) <strong>Database Read Replicas &amp; HNSW:</strong> Migrate pgvector to dedicated read-replicas with HNSW indexing to support thousands of concurrent vector queries."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">
+    <span class="qa-badge">CI/CD</span>
+    Q8: How do you prevent agent regressions in automated CI/CD pipelines?
+  </div>
+  <div class="qa-ans">
+    "In <code>evals/</code>, we have two automated quality gates run on every GitHub Pull Request:
+    <ul>
+      <li><strong>Retrieval Evaluation (<code>eval_retrieval.py</code>):</strong> Tests 24 golden queries against pgvector, ensuring Mean Reciprocal Rank (MRR) &gt; 0.85 and Recall@3 &gt; 0.90.</li>
+      <li><strong>Agent Decision Evaluation (<code>eval_agent.py</code>):</strong> Runs 10 multi-edge test cases (repeat RTOs, high-value festive orders, incomplete addresses) and asserts that guardrails catch 100% of illegal proposals, and that LLM-as-a-judge scores message empathy and clarity &gt; 4.0/5.0."</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
