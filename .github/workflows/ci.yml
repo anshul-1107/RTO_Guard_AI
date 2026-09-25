@@ -1,0 +1,34 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: rto
+          POSTGRES_PASSWORD: rto_pass
+          POSTGRES_DB: rto_guard
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U rto" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    env:
+      EMBEDDINGS_PROVIDER: fake
+      LLM_PROVIDER: fake
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: python -m data.generate
+      - run: python -m ml.train
+      - run: python -m rag.ingest
+      - run: pytest -q
+      - run: python -m data.load_to_db
+      - run: python -m evals.eval_retrieval
+      - run: python -m evals.eval_agent   # fails the build if quality gates drop
+      - run: python -m agent.run --sample 5 --auto-approve

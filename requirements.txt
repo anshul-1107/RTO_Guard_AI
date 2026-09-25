@@ -1,0 +1,14 @@
+# Runtime deps for Streamlit Community Cloud (training/dev extras live in pyproject.toml)
+numpy>=1.26
+pandas>=2.2
+pyarrow>=15.0
+pydantic>=2.6
+pydantic-settings>=2.2
+psycopg[binary]>=3.1
+lightgbm>=4.3
+scikit-learn>=1.4
+google-genai>=1.20
+langgraph>=1.0
+langgraph-checkpoint-postgres>=3.0
+langfuse>=3.0
+streamlit>=1.40

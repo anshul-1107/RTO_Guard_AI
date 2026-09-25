@@ -1,0 +1,73 @@
+{
+  "features": [
+    "city_tier",
+    "order_hour",
+    "log_order_value",
+    "num_items",
+    "discount_pct",
+    "is_cod",
+    "is_night_order",
+    "is_high_discount",
+    "is_first_order",
+    "customer_prior_orders",
+    "customer_prior_rto",
+    "customer_prior_rto_rate",
+    "address_len",
+    "address_has_landmark",
+    "address_has_house_no",
+    "pincode_hist_orders",
+    "pincode_hist_rto_rate",
+    "cod_x_log_value",
+    "category",
+    "courier",
+    "state",
+    "payment_mode"
+  ],
+  "categorical_levels": {
+    "category": [
+      "beauty",
+      "electronics",
+      "fashion",
+      "footwear",
+      "home"
+    ],
+    "courier": [
+      "Bluedart",
+      "Delhivery",
+      "Ecom Express",
+      "Shadowfax",
+      "Xpressbees"
+    ],
+    "state": [
+      "Bihar",
+      "Delhi",
+      "Gujarat",
+      "Karnataka",
+      "Kerala",
+      "Maharashtra",
+      "Rajasthan",
+      "Tamil Nadu",
+      "Uttar Pradesh",
+      "West Bengal"
+    ],
+    "payment_mode": [
+      "COD",
+      "PREPAID"
+    ]
+  },
+  "threshold": 0.22,
+  "global_rto_rate": 0.18734285714285714,
+  "metrics": {
+    "roc_auc": 0.7615306034475176,
+    "pr_auc": 0.3853166583335765,
+    "precision": 0.3325726456716872,
+    "recall": 0.6373177842565597,
+    "flag_rate": 0.32865,
+    "net_savings_inr": 47792.0,
+    "net_savings_per_1k_orders": 2389.6000000000004,
+    "rto_loss_reduction_pct": 7.740848720440558,
+    "threshold": 0.22,
+    "best_iteration": 113,
+    "baseline_all_cod_savings_inr": 5324.0
+  }
+}

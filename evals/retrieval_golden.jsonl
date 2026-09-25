@@ -1,0 +1,24 @@
+{"q": "What discount can we give a medium risk COD order to pay online?", "doc": "prepaid-conversion-offer", "section": "Standard offer"}
+{"q": "Can the bot send a 10% prepaid discount without anyone approving it?", "doc": "prepaid-conversion-offer", "section": "Enhanced offer"}
+{"q": "Is the prepaid offer allowed on a 399 rupee order?", "doc": "prepaid-conversion-offer", "section": "Eligibility rules"}
+{"q": "How long is the online payment link valid?", "doc": "prepaid-conversion-offer", "section": "Payment link"}
+{"q": "How many times can we try to confirm a COD order with the customer?", "doc": "cod-verification-sop", "section": "Attempt limits and timing"}
+{"q": "Order placed at 2am, when do we message the customer?", "doc": "cod-verification-sop", "section": "Attempt limits and timing"}
+{"q": "Customer didn't reply to WhatsApp, what next?", "doc": "cod-verification-sop", "section": "Verification channels"}
+{"q": "Can the AI agent cancel a risky order by itself?", "doc": "order-hold-policy", "section": "Cancellation rules"}
+{"q": "Maximum time an order can be kept on hold", "doc": "order-hold-policy", "section": "Holding an order"}
+{"q": "Can I tell the customer their order looks suspicious?", "doc": "customer-communication-guidelines", "section": "Tone"}
+{"q": "Which language should messages to Bihar customers be in?", "doc": "customer-communication-guidelines", "section": "Language"}
+{"q": "Customer address has no house number, what should the message ask for?", "doc": "address-correction-sop", "section": "Correction request"}
+{"q": "Customer has returned two parcels before, can they order cash on delivery?", "doc": "repeat-rto-customer-policy", "section": "Rule"}
+{"q": "How much is the token amount for part payment orders?", "doc": "partial-cod-token-advance", "section": "Amount"}
+{"q": "Which courier should ship a 4000 rupee cash order?", "doc": "high-value-order-policy", "section": "Courier selection"}
+{"q": "Can we send customer phone numbers to the LLM?", "doc": "pii-data-privacy", "section": "Masking"}
+{"q": "Who approves blocking a customer from COD permanently?", "doc": "escalation-matrix", "section": "Actions requiring Ops Manager approval"}
+{"q": "Rules for late night heavy discount orders during Diwali sale", "doc": "festive-sale-guidelines", "section": "Tighter rules during sales"}
+{"q": "Delivery failed because customer was not home, what do we do?", "doc": "ndr-handling-sop", "section": "Actions on NDR"}
+{"q": "How quickly must we respond to a Shadowfax non-delivery report?", "doc": "courier-shadowfax", "section": "NDR response window"}
+{"q": "What does Bluedart charge for a returned shipment?", "doc": "courier-bluedart", "section": "RTO charges"}
+{"q": "How many delivery attempts does Ecom Express make?", "doc": "courier-ecom-express", "section": "Delivery attempts"}
+{"q": "What is the difference between NDR and RTO?", "doc": "rto-glossary", "section": "NDR (Non-Delivery Report)"}
+{"q": "Max prepaid discount during end of season sale for a high risk order", "doc": "festive-sale-guidelines", "section": "Offer limits during sales"}
