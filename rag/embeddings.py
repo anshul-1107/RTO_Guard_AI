@@ -92,6 +92,7 @@ class FakeEmbedder:
 
 
 def get_embedder() -> Embedder:
-    if settings.embeddings_provider == "fake":
+    if settings.embeddings_provider == "fake" or not (settings.gemini_api_key and settings.gemini_api_key.strip()):
         return FakeEmbedder()
     return GeminiEmbedder()
+

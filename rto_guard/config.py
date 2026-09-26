@@ -1,4 +1,26 @@
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _load_streamlit_secrets():
+    """Extract and flatten secrets from streamlit if running in Streamlit Cloud."""
+    try:
+        import streamlit as st
+
+        def _walk(obj, prefix=""):
+            if hasattr(obj, "items"):
+                for k, v in obj.items():
+                    _walk(v, k if not prefix else f"{prefix}_{k}")
+            elif isinstance(obj, (str, int, float, bool)):
+                os.environ[prefix.upper()] = str(obj)
+
+        if hasattr(st, "secrets"):
+            _walk(st.secrets)
+    except Exception:
+        pass
+
+
+_load_streamlit_secrets()
 
 
 class Settings(BaseSettings):
@@ -52,3 +74,11 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Safe fallback for cloud/demo environments when GEMINI_API_KEY is not provided
+if not settings.gemini_api_key or not settings.gemini_api_key.strip():
+    if settings.llm_provider == "gemini":
+        settings.llm_provider = "fake"
+    if settings.embeddings_provider == "gemini":
+        settings.embeddings_provider = "fake"
+

@@ -20,11 +20,17 @@ os.chdir(ROOT)
 
 # Streamlit Cloud secrets -> env vars, before settings are loaded
 try:
-    for _k, _v in st.secrets.items():
-        if isinstance(_v, str | int | float | bool):
-            os.environ.setdefault(_k.upper(), str(_v))
+    def _sync_secrets(obj, prefix=""):
+        if hasattr(obj, "items"):
+            for k, v in obj.items():
+                _sync_secrets(v, k if not prefix else f"{prefix}_{k}")
+        elif isinstance(obj, (str, int, float, bool)):
+            os.environ[prefix.upper()] = str(obj)
+
+    _sync_secrets(st.secrets)
 except Exception:
     pass
+
 
 import pandas as pd  # noqa: E402
 from langgraph.types import Command  # noqa: E402

@@ -137,5 +137,8 @@ class FakeLLM:
         raise ValueError(f"FakeLLM has no rule for {schema}")
 
 
-def get_llm() -> LLM:
-    return FakeLLM() if settings.llm_provider == "fake" else GeminiLLM()
+def get_llm(model: str | None = None, fallback: str | None = None) -> LLM:
+    if settings.llm_provider == "fake" or not (settings.gemini_api_key and settings.gemini_api_key.strip()):
+        return FakeLLM()
+    return GeminiLLM(model, fallback)
+
